@@ -1,23 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  
+  /* Brand palette (Project Details) */
+  --espresso: #29211f;
+  --ivory: #faf6f0;
+  --burgundy: #713847;
+  --muted-rose: #c9a6a0;
+  --sand: #e8ddd1;
+  --white: #ffffff;
+
+  /* Semantic roles */
+  --background: var(--ivory);
+  --foreground: var(--espresso);
 }
 
 @theme inline {
+  /* Utilities: bg-espresso, text-burgundy, border-sand, ... */
+  --color-espresso: var(--espresso);
+  --color-ivory: var(--ivory);
+  --color-burgundy: var(--burgundy);
+  --color-muted-rose: var(--muted-rose);
+  --color-sand: var(--sand);
+  --color-white: var(--white);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Utilities: font-sans (DM Sans), font-heading (Cormorant) */
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-heading: var(--font-cormorant), Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  /* Keeps focused elements from hiding under a sticky header (WCAG 2.4.11) */
+  scroll-padding-top: 6rem;
 }
 
 body {
   background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 3px solid var(--burgundy);
+  outline-offset: 2px;
+}
+
+/* Restrained motion (respects user preference) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
