@@ -1,5 +1,12 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
+/* Dark mode is not shipped. Keeping this variant (instead of deleting it) stops shadcn's `dark:` classes from following the OS preference. */
+@custom-variant dark (&:is(.dark *));
+
+/* 1. PRIMITIVES + 2. SHADCN ROLES
+   Raw values live here and nowhere else. Components never use raw hex. */
 :root {
   /* Brand palette (Project Details) */
   --espresso: #29211f;
@@ -25,29 +32,113 @@
   --amber-700: #8a5a00;
   --amber-50: #fbf0da;
 
-  /* Page-level roles */
+  /* shadcn roles -> brand.
+     Keep these NAMES (components are hard-wired to them), change only values. */
   --background: var(--ivory);
   --foreground: var(--espresso);
+
+  --card: var(--white);
+  --card-foreground: var(--espresso);
+
+  --popover: var(--white);
+  --popover-foreground: var(--espresso);
+
+  --primary: var(--burgundy);
+  --primary-foreground: var(--white);
+
+  --secondary: var(--sand-100);
+  --secondary-foreground: var(--espresso);
+
+  --muted: var(--sand-100);
+  --muted-foreground: var(--taupe-500);
+
+  --accent: var(--rose-100);
+  --accent-foreground: var(--espresso);
+
+  --destructive: var(--red-700);
+
+  --border: var(--sand-300);
+  --input: var(--sand-300);
+  --ring: var(--burgundy);
+
+  --chart-1: var(--burgundy);
+  --chart-2: var(--muted-rose);
+  --chart-3: var(--taupe-500);
+  --chart-4: var(--sand-300);
+  --chart-5: var(--espresso);
+
+  --sidebar: var(--sand-100);
+  --sidebar-foreground: var(--espresso);
+  --sidebar-primary: var(--burgundy);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--rose-100);
+  --sidebar-accent-foreground: var(--espresso);
+  --sidebar-border: var(--sand-300);
+  --sidebar-ring: var(--burgundy);
+
+  /* Kept for shadcn compatibility. Actual radii are set explicitly below. */
+  --radius: 0.5rem;
 }
 
+/* 3. TAILWIND UTILITIES */
+
 @theme inline {
-  /* Brand utilities: bg-espresso, text-burgundy, border-sand ... */
+  /* Brand utilities (Tailwind's default `white` already exists, so it's omitted) */
   --color-espresso: var(--espresso);
   --color-ivory: var(--ivory);
   --color-burgundy: var(--burgundy);
   --color-muted-rose: var(--muted-rose);
   --color-sand: var(--sand);
-  --color-white: var(--white);
 
+  /* Fonts: --font-sans is injected by next/font on <html>. `inline` stops this from emitting a circular var() in :root. */
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+
+  /* shadcn roles */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-  --font-heading: var(--font-cormorant), Georgia, serif;
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius: ONE source of truth (design system values). 2xl+ are only used by newer shadcn components. */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-4xl: 40px;
 }
 
-/* Semantic tokens: names match the design system 1:1.
-   Components use ONLY these (never raw hex or brand primitives). */
 @theme {
   --color-bg-page: var(--ivory);
   --color-bg-surface: var(--white);
@@ -80,40 +171,42 @@
   --color-warning: var(--amber-700);
   --color-warning-bg: var(--amber-50);
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;
-  --radius-xl: 16px;
-
   --shadow-sm: 0 1px 2px rgba(41, 33, 31, 0.08);
   --shadow-md: 0 4px 16px rgba(41, 33, 31, 0.1);
   --shadow-lg: 0 12px 32px rgba(41, 33, 31, 0.14);
 }
 
-html {
-  /* Keeps focused elements from hiding under a sticky header (WCAG 2.4.11) */
-  scroll-padding-top: 6rem;
-}
+/* 4. BASE STYLES */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-}
+  html {
+    @apply font-sans;
+    scroll-padding-top: 6rem;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
-}
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
 
-/* Visible keyboard focus everywhere: 2px ring, 2px offset (design system) */
-:focus-visible {
-  outline: 2px solid var(--color-focus-ring);
-  outline-offset: 2px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  /* Visible keyboard focus for plain elements (links, native inputs).
+     shadcn components opt out with outline-none and draw their own ring. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
 }
 
 /* Restrained motion (respects user preference) */
