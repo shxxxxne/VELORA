@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Cormorant_Garamond, DM_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/Sonner";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -38,7 +39,9 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", cormorant.variable, dmSans.variable, "font-sans", geist.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">{children}
+        <Toaster />
+      </body>
     </html>
   );
 }
