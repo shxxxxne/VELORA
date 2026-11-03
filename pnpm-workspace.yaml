@@ -1,6 +1,6 @@
 allowBuilds:
-  '@prisma/engines': false
+  '@prisma/engines': true
   esbuild: false
-  prisma: false
+  prisma: true
   unrs-resolver: true
   workerd: false
